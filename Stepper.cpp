@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <limits.h>
 
 #define UL_SUB(a, b) (((b) > (a)) ? ((ULONG_MAX - (b)) + (a)) : ((a) - (b)))
