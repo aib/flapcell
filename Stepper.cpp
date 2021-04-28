@@ -40,7 +40,7 @@ public:
 	{
 		unsigned long now = micros();
 
-		bool doStep = (targetPosition == -1) || (targetPosition != currentPosition());
+		bool doStep = (targetPosition == -1) || (targetPosition != stepsFromHome);
 		if (doStep && UL_LESS(nextStepTime, now)) {
 			step();
 			nextStepTime = now + halfStepTime;
@@ -50,7 +50,7 @@ public:
 
 	void stop()
 	{
-		targetPosition = currentPosition();
+		targetPosition = stepsFromHome;
 	}
 
 	void spin()
@@ -60,7 +60,7 @@ public:
 
 	void step(int num)
 	{
-		targetPosition = normalizePosition(currentPosition() + num);
+		targetPosition = normalizePosition(stepsFromHome + num);
 	}
 
 	void goTo(int position)
