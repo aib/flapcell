@@ -8,6 +8,7 @@ class Stepper {
 	int homePin;
 	unsigned int stepsPerRevolution;
 	unsigned long halfStepTime;
+	int posOffset;
 
 	int targetPosition;
 
@@ -17,8 +18,8 @@ class Stepper {
 	int stepsFromHome;
 
 public:
-	Stepper(int stepPin, int homePin, unsigned int stepsPerRevolution, unsigned long stepTime = 1000ul)
-		:stepPin(stepPin), homePin(homePin), stepsPerRevolution(stepsPerRevolution)
+	Stepper(int stepPin, int homePin, unsigned int stepsPerRevolution, unsigned long stepTime = 1000ul, int posOffset = 0)
+		:stepPin(stepPin), homePin(homePin), stepsPerRevolution(stepsPerRevolution), posOffset(posOffset)
 	{
 		halfStepTime = stepTime >> 1;
 		targetPosition = 0;
@@ -60,22 +61,22 @@ public:
 
 	void step(int num)
 	{
-		targetPosition = normalizePosition(stepsFromHome + num);
+		targetPosition = normalizePosition(stepsFromHome + num + posOffset);
 	}
 
 	void goTo(int position)
 	{
-		targetPosition = normalizePosition(position);
+		targetPosition = normalizePosition(position + posOffset);
 	}
 
 	void home()
 	{
-		goTo(0);
+		goTo(posOffset);
 	}
 
-	int currentPosition() { return stepsFromHome; }
+	int currentPosition() { return normalizePosition(stepsFromHome - posOffset); }
 
-	bool isHome() { return stepsFromHome == 0; }
+	bool isHome() { return currentPosition() == 0; }
 
 private:
 	void step()
