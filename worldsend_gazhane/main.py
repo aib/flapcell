@@ -91,7 +91,7 @@ def sat_name_str(name):
 		name = name.replace(" & ", " ")
 		if len(name) > 14:
 			name = name[:14]
-		return name
+		return name + " " * (14 - len(name))
 
 	def string_to_flap(s, subst={}, fallback=None):
 		flap_str = ''
