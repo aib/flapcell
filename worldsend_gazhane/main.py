@@ -34,6 +34,9 @@ class MessageSender:
 				if now - last_time < MINIMUM_DISPLAY_TIME:
 					continue
 
+				if len(self.serials) == 0:
+					break
+
 				ser = self.serials[i % len(self.serials)]
 				try:
 					ser.write(msg.encode('ascii') + b'\r')
