@@ -1,16 +1,21 @@
 import queue
 import re
 import threading
+import time
 
 import pythonosc.dispatcher
 import pythonosc.osc_server
 import serial
 import serial.tools.list_ports
 
+DISPLAYS = 1
+MINIMUM_DISPLAY_TIME = 10
+
 class MessageSender:
 	def __init__(self):
 		self.q = queue.Queue()
 		self.serials = []
+		self.last_display_times = [time.monotonic()] * DISPLAYS
 
 		threading.Thread(name="MessageSender", target=self._start, daemon=True).start()
 
@@ -23,8 +28,13 @@ class MessageSender:
 			self._get_serials()
 
 			msg = self.q.get()
+			now = time.monotonic()
 
-			for i, ser in enumerate(self.serials):
+			for i, last_time in enumerate(self.last_display_times):
+				if now - last_time < MINIMUM_DISPLAY_TIME:
+					continue
+
+				ser = self.serials[i % len(self.serials)]
 				try:
 					ser.write(msg.encode('ascii') + b'\r')
 				except Exception as e:
@@ -33,6 +43,9 @@ class MessageSender:
 						ser.close()
 					except: pass
 					del self.serials[i]
+
+				self.last_display_times[i] = now
+				break
 
 	def _get_serials(self):
 		for port, desc, hwid in serial.tools.list_ports.comports():
