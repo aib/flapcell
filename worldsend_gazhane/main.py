@@ -61,6 +61,7 @@ class MessageSender:
 			intro = ser.readline()
 
 			if intro.startswith(b'Serial Driver'):
+				print("Adding port", port)
 				self.serials.append(ser)
 				continue
 
