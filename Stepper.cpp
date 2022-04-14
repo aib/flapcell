@@ -71,7 +71,7 @@ public:
 
 	void home()
 	{
-		goTo(posOffset);
+		goTo(0);
 	}
 
 	int currentPosition() { return normalizePosition(stepsFromHome - posOffset); }
