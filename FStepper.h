@@ -9,12 +9,14 @@
 #define UL_LESS(a, b) ((UL_SUB(b, a)) < (ULONG_MAX >> 1))
 
 class FStepper {
+public:
 	const int stepPin;
 	const int homePin;
 	const unsigned int stepsPerRevolution;
 	const int posOffset;
 	const unsigned long halfStepTime;
 
+private:
 	int targetPosition;
 
 	int stepPinState;
