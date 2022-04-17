@@ -3,7 +3,7 @@
 #define UL_SUB(a, b) (((b) > (a)) ? ((ULONG_MAX - (b)) + (a)) : ((a) - (b)))
 #define UL_LESS(a, b) ((UL_SUB(b, a)) < (ULONG_MAX >> 1))
 
-class Stepper {
+class FStepper {
 	int stepPin;
 	int homePin;
 	unsigned int stepsPerRevolution;
@@ -18,7 +18,7 @@ class Stepper {
 	int stepsFromHome;
 
 public:
-	Stepper(int stepPin, int homePin, unsigned int stepsPerRevolution, unsigned long stepTime = 1000ul, int posOffset = 0)
+	FStepper(int stepPin, int homePin, unsigned int stepsPerRevolution, unsigned long stepTime = 1000ul, int posOffset = 0)
 		:stepPin(stepPin), homePin(homePin), stepsPerRevolution(stepsPerRevolution), posOffset(posOffset)
 	{
 		halfStepTime = stepTime >> 1;
